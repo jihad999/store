@@ -13,7 +13,7 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">{{auth()->user()->name??null}}</a>
         </div>
       </div>
 
@@ -65,6 +65,25 @@
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
+          </li>
+          <li class="nav-item">
+            <!-- Authentication -->
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                {{-- <x-dropdown-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                    this.closest('form').submit();">
+                    {{ __('Log Out') }}
+                </x-dropdown-link> --}}
+                <a href="{{route('logout')}}" onclick="event.preventDefault(); this.closest('form').submit();" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                      Logout
+                    </p>
+                  </a>
+            </form>
+
           </li>
         </ul>
       </nav>

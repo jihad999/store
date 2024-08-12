@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
+  @vite('resources/css/app.css')
+  @vite('public/dist/css/jihad.css')
   @stack('styles')
 </head>
 <body class="hold-transition sidebar-mini">
