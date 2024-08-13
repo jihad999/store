@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{env('APP_NAME')}}</title>
+  <title>{{env('APP_NAME')}} - @yield('title')</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -27,9 +27,21 @@
 
   @include('layouts.aside')
 
+
+  <div class="content-wrapper" style="height: auto;">
   <!-- Content Wrapper. Contains page content -->
 
   @include('layouts.breadcrump')
+
+  <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            @yield('content')
+        <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
 
   <!-- /.content-wrapper -->
 
