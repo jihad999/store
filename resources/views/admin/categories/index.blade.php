@@ -22,6 +22,7 @@
         <tr>
             <th></th>
             <th>ID</th>
+            <th>Image</th>
             <th>Name</th>
             <th>Parent</th>
             <th>Status</th>
@@ -34,6 +35,7 @@
             <tr>
                 <td></td>
                 <td>{{$category->id??null}}</td>
+                <td><img src="{{asset('storage/' . $category->image??null)}}" alt="" width="100px"></td>
                 <td>{{$category->name??null}}</td>
                 <td>{{$category->parent_id??null}}</td>
                 <td>{{$category->status??null}}</td>

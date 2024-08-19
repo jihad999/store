@@ -4,7 +4,9 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -38,7 +40,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::create($request->all());
+        $data = $request->except('image');
+        $data['image'] = $this->uplodaImage($request);
+
+        $category = Category::create($data);
         return redirect()->route('admin.categories.index')->with('success','Category Created!');
     }
 
@@ -81,7 +86,17 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
-        $category->update($request->all());
+
+        $old_image = $category->image;
+        $data = $request->except('image');
+        $data['image'] = $this->uplodaImage($request);
+
+        if($old_image && $data['image']){
+            Storage::disk('public')->delete($old_image);
+            // Storage::disk('')->delete($old_image);
+        }
+
+        $category->update($data);
         return redirect()->route('admin.categories.index')->with('success','Category Updated!');
     }
 
@@ -93,8 +108,29 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        // $category = Category::findOrFail($id)->delete();
-        $category = Category::destroy($id);
+        $category = Category::findOrFail($id)->delete();
+        $category->delete();
+
+        if ($category->image) {
+            Storage::disk('public')->delete($category->image);
+        }
+        // $category = Category::destroy($id);
         return redirect()->route('admin.categories.index')->with('success','Category Deleted!');
+    }
+
+    protected function uplodaImage(Request $request) {
+        if(!$request->hasFile('image')){
+            return;
+        }
+
+        $file = $request->file('image');
+        $path = $file->storeAs('uploads/images',Carbon::now()."_".trim($file->getClientOriginalExtension()," "),[
+            'disk' => 'public',
+        ]);
+            // $file->getSize()  \\ file size;
+            // $file->getClientOriginalExtension() \\ file extension;
+            // $file->getClientOriginalName() \\ file name was uploaded;
+            // $file->getMimeType() \\ file type;
+        return $path;
     }
 }
